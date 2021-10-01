@@ -3,8 +3,6 @@ from mypackages.format_functions import castToFloat, formatGrowthRate, formatOpM
 from mypackages.gather_input import inputCompanies, enterSharePrice
 import pandas as pd
 
-
-
 def createCompanyDict():    
     """
         Make sure that all read data is a number! Column names are all lowercase!
@@ -99,8 +97,6 @@ def PE(companyDict, resultsDict, companyName):
         resultsDict[companyName].setPE(peList)
     return resultsDict
 
-
-
 def viewCompanies(resultsDict, companyDict, companyNamesList):
     for companyName in companyNamesList:
         growthRate = companyDict[companyName].getGrowthRate()
@@ -125,44 +121,38 @@ def viewCompanies(resultsDict, companyDict, companyNamesList):
         print("PE --> ", resultsDict[companyName].getPE())
 
 def viewAnotherModel(companyDict, resultsDict):
-    companyNamesList = inputCompanies(resultsDict)
+    companyList = inputCompanies(resultsDict)
     print("Modify revenue growth, op margin, or share change? Select all catagories that apply or type \"none\".")
     newParameters = input() 
     newParameters = newParameters.lower()
     newParametersList = newParameters.split(", ")
      
-    for companyName in companyNamesList:
+    for company in companyList:
         for i in newParametersList:
             if i in "revenue growth":
-                enterGrowth = "Enter a new revenue growth rate for {0} ex. 1.25 (25%)"
-                enterGrowth = enterGrowth.format(companyName)
-                print(enterGrowth)
+                print(f"Enter a new revenue growth rate for {company} ex. 1.25 (25%)")
                 newGrowthRate = input()
                 newGrowthRate = castToFloat(newGrowthRate)
-                companyDict[companyName].setGrowthRate(newGrowthRate)
+                companyDict[company].setGrowthRate(newGrowthRate)
+            
             elif i in "op margin":
-                enterMargin = "Enter a new starting operating margin for {0} ex. 0.25 (25%)"
-                enterMargin = enterMargin.format(companyName)
-                print(enterMargin)
+                print(f"Enter a new starting operating margin for {company} ex. 0.25 (25%)")
                 newMargin = input()
                 newMargin = castToFloat(newMargin)
-                companyDict[companyName].setOpMargin(newMargin)
-                enterMarginGrowth = "Enter a new growth rate for operating margin (basis points) current: {0} ({1} pts)  or type \"same\""
-                currentRate = companyDict[companyName].getOpMarginGrowthRate()
+                companyDict[company].setOpMargin(newMargin)
+                currentRate = companyDict[company].getOpMarginGrowthRate()
                 currentPoints = currentRate * 100
-                enterMarginGrowth = enterMarginGrowth.format(currentRate,currentPoints)
-                print(enterMarginGrowth)
+                print(f"Enter a new growth rate for operating margin (basis points) current: {currentRate} ({currentPoints} pts)  or type \"same\"")
                 newMarginGrowth = input()
                 if newMarginGrowth not in "same":
                     newMarginGrowth = castToFloat(newMarginGrowth)
-                    companyDict[companyName].setOpMarginGrowthRate(newMarginGrowth)   
+                    companyDict[company].setOpMarginGrowthRate(newMarginGrowth)   
+            
             elif i in "share change":
-                enterShares = "Enter a new rate for change in share count for {0} ex. 0.95 (5% buyback) or 1.05 (5% increase)"
-                enterShares = enterShares.format(companyName)
-                print(enterShares)
+                print(f"Enter a new rate for change in share count for {company} ex. 0.95 (5% buyback) or 1.05 (5% increase)")
                 newShareCount = input()
                 newShareCount = castToFloat(newShareCount)
-                companyDict[companyName].setShareChange(newShareCount)
+                companyDict[company].setShareChange(newShareCount)
     resultsDict = createResultsDict(companyDict)
     viewCompanies(resultsDict,companyDict,companyNamesList)
 

@@ -1,16 +1,14 @@
-def castToFloat(variable):
+def castToFloat(num):
    notNum = True
    while notNum == True:
         try:
-            variable = float(variable)
+            num = float(num)
             notNum = False
         except:
-            notValid = "\"{0}\" is not a number"
-            notValid = notValid.format(variable)
-            print(notValid)
+            print(f"\"{num}\" is not a number")
             print("Enter a number")
-            variable = input()
-   return variable 
+            num = input()
+   return num 
 
 def formatGrowthRate(data):
     data *= 100
