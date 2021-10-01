@@ -1,27 +1,6 @@
 from mypackages.classes import company, results
+from mypackages.format_functions import castToFloat, enterSharePrice, formatGrowthRate, formatOpMargin, formatEPS
 import pandas as pd
-
-def castToFloat(variable):
-   notNum = True
-   while notNum == True:
-        try:
-            variable = float(variable)
-            notNum = False
-        except:
-            notValid = "\"{0}\" is not a number"
-            notValid = notValid.format(variable)
-            print(notValid)
-            print("Enter a number")
-            variable = input()
-   return variable 
-
-def enterSharePrice(companyDict, resultsDict, companyName):
-    enterPrice = "Enter current share price for {0}"
-    enterPrice = enterPrice.format(companyName)
-    print(enterPrice)
-    sharePrice = input()
-    companyDict[companyName].setSharePrice(sharePrice)
-    resultsDict = PE(companyDict, resultsDict, companyName)
 
 def createCompanyDict():    
     """
@@ -74,6 +53,7 @@ def calcOperatingIncome(companyDict, resultsDict, companyName):
     maxMargin = companyDict[companyName].getMaxOpMargin()
     years = companyDict[companyName].getYears()
     result = []
+    
     for revenue in revenueList:
         margin += growthRate    
         if margin > maxMargin:
@@ -81,6 +61,7 @@ def calcOperatingIncome(companyDict, resultsDict, companyName):
         value = margin * revenue
         value = round(value,2)
         result.append(value)
+    
     resultsDict[companyName].setOperatingIncome(result)
     return resultsDict
 
@@ -115,34 +96,6 @@ def PE(companyDict, resultsDict, companyName):
         resultsDict[companyName].setPE(peList)
     return resultsDict
 
-def formatGrowthRate(data):
-    data *= 100
-    data -= 100
-    data = round(data,2)
-    data = str(data)
-    data += "%"
-    return data
-
-def formatOpMargin(data):
-    data *=100
-    data = round(data,2)
-    data = str(data)
-    data += "%"
-    return data
-
-def formatEPS(data):
-    data -= 1
-    data *= 100
-    data = round(data,2)
-    data = str(data)
-    data += "%"
-    if data[0] == "-":
-        data = data[1:]
-        data += " buyback"
-    else:
-        data += " share increase"
-    return data
-
 def safeInputCompanies(resultsDict):
     result = inputCompanies(resultsDict)
     while result == True:
@@ -168,9 +121,7 @@ def inputCompanies(resultsDict):
     return companyNamesList
 
 def viewCompanies(resultsDict, companyDict, companyNamesList):
-    
     for companyName in companyNamesList:
-        print()
         growthRate = companyDict[companyName].getGrowthRate()
         growthRate = formatGrowthRate(growthRate)
         opMargin = companyDict[companyName].getOpMargin()        
@@ -183,12 +134,13 @@ def viewCompanies(resultsDict, companyDict, companyNamesList):
         marginGrowth = formatOpMargin(marginGrowth)
         marginGrowth = marginGrowth[:-1]
         marginGrowth += " basis points"
-        enterSharePrice(companyDict,resultsDict,companyName)
-        
-        print(" " + companyName.capitalize())
-        print(" Revenue --> " + "growth rate: " + growthRate, resultsDict[companyName].getRevenue())
-        print(" Operating Income --> "  + "margin: " + opMargin + " max " + maxMargin, resultsDict[companyName].getOperatingIncome(),  " growth: " + marginGrowth )
-        print(" EPS --> " + shareChange, resultsDict[companyName].getEPS())
+        companyDict = enterSharePrice(companyDict, resultsDict, companyName)
+        resultsDict = PE(companyDict, resultsDict, companyName)
+
+        print("\n", companyName.upper())
+        print("Revenue --> " + "growth rate: " + growthRate, resultsDict[companyName].getRevenue())
+        print("Operating Income --> "  + "margin: " + opMargin + " max " + maxMargin, resultsDict[companyName].getOperatingIncome(),  " growth: " + marginGrowth )
+        print("EPS --> " + shareChange, resultsDict[companyName].getEPS())
         print("PE --> ", resultsDict[companyName].getPE())
 
 def viewAnotherModel(companyDict, resultsDict):
