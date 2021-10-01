@@ -1,18 +1,13 @@
 from mypackages.classes import company, results
 from mypackages.format_functions import castToFloat, formatGrowthRate, formatOpMargin, formatEPS
+from mypackages.gather_input import inputCompanies, enterSharePrice
 import pandas as pd
 
-def enterSharePrice(companyDict, resultsDict, companyName):
-    enterPrice = "Enter current share price for {0}"
-    enterPrice = enterPrice.format(companyName)
-    print(enterPrice)
-    sharePrice = input()
-    companyDict[companyName].setSharePrice(sharePrice)
-    return companyDict
+
 
 def createCompanyDict():    
     """
-    - Make sure that all read data is a number! Column names are all lowercase!
+        Make sure that all read data is a number! Column names are all lowercase!
     """
     companyDict = {}
     companyDataDF = pd.read_csv("CompanyDataCSV.txt") 
@@ -104,29 +99,7 @@ def PE(companyDict, resultsDict, companyName):
         resultsDict[companyName].setPE(peList)
     return resultsDict
 
-def safeInputCompanies(resultsDict):
-    result = inputCompanies(resultsDict)
-    while result == True:
-        if result == True:
-            result = inputCompanies(resultsDict)
-    return result
 
-def inputCompanies(resultsDict):
-    print("Companies that you want information on:  ") 
-    companies = input()
-    companies = companies.lower()
-    companyNamesList = companies.rsplit(", ") 
-    if len(companyNamesList) == 1:
-        companyNamesList = companies.rsplit(",")
-    if len(companyNamesList) == 1:
-        companyNamesList = companies.rsplit()
-    for companyName in companyNamesList:
-        if companyName not in resultsDict:
-            notValid = "{0} is not a valid company"
-            notValid = notValid.format(companyName)
-            print(notValid)
-            return True
-    return companyNamesList
 
 def viewCompanies(resultsDict, companyDict, companyNamesList):
     for companyName in companyNamesList:
@@ -152,7 +125,7 @@ def viewCompanies(resultsDict, companyDict, companyNamesList):
         print("PE --> ", resultsDict[companyName].getPE())
 
 def viewAnotherModel(companyDict, resultsDict):
-    companyNamesList = safeInputCompanies(resultsDict)
+    companyNamesList = inputCompanies(resultsDict)
     print("Modify revenue growth, op margin, or share change? Select all catagories that apply or type \"none\".")
     newParameters = input() 
     newParameters = newParameters.lower()
@@ -211,7 +184,7 @@ def answerViewAnother(answer):
 
 companyDict = createCompanyDict()
 resultsDict = createResultsDict(companyDict)
-companyNamesList = safeInputCompanies(resultsDict)
+companyNamesList = inputCompanies(resultsDict)
 viewCompanies(resultsDict,companyDict,companyNamesList)
 print()
 print("Do you want to view another model Y or N?")
