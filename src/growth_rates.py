@@ -1,4 +1,4 @@
-from mypackages.classes import company, results
+from mypackages.classes import Company, Results
 from mypackages.format_functions import castToFloat, formatGrowthRate, formatOpMargin, formatEPS
 from mypackages.gather_input import inputCompanies, enterSharePrice
 import pandas as pd
@@ -10,7 +10,7 @@ def createCompanyDict():
     companyDict = {}
     companyDataDF = pd.read_csv("CompanyDataCSV.txt") 
     for companyName in companyDataDF:
-        companyObj = company(
+        companyObj = Company(
             companyDataDF.loc[0,companyName],companyDataDF.loc[1,companyName],
             companyDataDF.loc[2,companyName],companyDataDF.loc[3,companyName], 
             companyDataDF.loc[4,companyName],companyDataDF.loc[5,companyName],
@@ -41,7 +41,7 @@ def calcRevenue(companyDict, resultsDict, companyName):
         values.append(revenue)
         n += 1
     
-    resultsObj = results()
+    resultsObj = Results()
     resultsObj.setRevenue(values)
     resultsDict[companyName] = resultsObj
     return resultsDict
@@ -97,28 +97,43 @@ def PE(companyDict, resultsDict, companyName):
         resultsDict[companyName].setPE(peList)
     return resultsDict
 
-def viewCompanies(resultsDict, companyDict, companyNamesList):
-    for companyName in companyNamesList:
-        growthRate = companyDict[companyName].getGrowthRate()
+def formatResults(resultsDict, company, key):
+    totalResults = ''
+    if key == 'revenue':
+        results = resultsDict[company].getRevenue()
+    elif key == 'opinc':
+        results = resultsDict[company].getOperatingIncome()
+    elif key == 'eps':
+        results = resultsDict[company].getEPS()
+    elif key == 'pe':
+        results = resultsDict[company].getPE()
+
+    for result in results:
+        totalResults += (str(result) + " " )
+    return totalResults
+
+def viewCompanies(resultsDict, companyDict, companyList):
+    for company in companyList:
+        growthRate = companyDict[company].getGrowthRate()
         growthRate = formatGrowthRate(growthRate)
-        opMargin = companyDict[companyName].getOpMargin()        
+        opMargin = companyDict[company].getOpMargin()        
         opMargin = formatOpMargin(opMargin)
-        shareChange = companyDict[companyName].getShareChange()
+        shareChange = companyDict[company].getShareChange()
         shareChange = formatEPS(shareChange)
-        maxMargin = companyDict[companyName].getMaxOpMargin()
+        maxMargin = companyDict[company].getMaxOpMargin()
         maxMargin = formatOpMargin(maxMargin)
-        marginGrowth = companyDict[companyName].getOpMarginGrowthRate()
+        marginGrowth = companyDict[company].getOpMarginGrowthRate()
         marginGrowth = formatOpMargin(marginGrowth)
         marginGrowth = marginGrowth[:-1]
         marginGrowth += " basis points"
-        companyDict = enterSharePrice(companyDict, resultsDict, companyName)
-        resultsDict = PE(companyDict, resultsDict, companyName)
-
-        print("\n", companyName.upper())
-        print("Revenue --> " + "growth rate: " + growthRate, resultsDict[companyName].getRevenue())
-        print("Operating Income --> "  + "margin: " + opMargin + " max " + maxMargin, resultsDict[companyName].getOperatingIncome(),  " growth: " + marginGrowth )
-        print("EPS --> " + shareChange, resultsDict[companyName].getEPS())
-        print("PE --> ", resultsDict[companyName].getPE())
+        companyDict = enterSharePrice(companyDict, resultsDict, company)
+        resultsDict = PE(companyDict, resultsDict, company)
+         
+        print("\n", company.upper())
+        print(f"Revenue --> growth rate: {growthRate}" + formatResults(resultsDict, company, 'revenue'))
+        print(f"Operating Income --> margin: {opMargin} max: {maxMargin}, growth:  {marginGrowth}" + formatResults(resultsDict, company, 'opinc'))
+        print(f"EPS --> {shareChange}" + formatResults(resultsDict, company, 'eps'))
+        print("PE --> " + formatResults(resultsDict, company, 'pe'))
 
 def viewAnotherModel(companyDict, resultsDict):
     companyList = inputCompanies(resultsDict)

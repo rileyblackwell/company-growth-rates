@@ -1,4 +1,4 @@
-class company(object):
+class Company(object):
     def __init__(self, r, g, m, omg, mom, s, sc):
         self.revenue = r
         self.growthRate = g
@@ -44,7 +44,7 @@ class company(object):
     def setYears(self, y):
         self.years = y
      
-class results(object):
+class Results(object):
     def __init__(self, noValue = ["No values for this instance"]):
         self.revenue = noValue 
         self.operatingIncome = noValue 
