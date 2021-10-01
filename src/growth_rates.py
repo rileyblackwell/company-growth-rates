@@ -1,6 +1,14 @@
 from mypackages.classes import company, results
-from mypackages.format_functions import castToFloat, enterSharePrice, formatGrowthRate, formatOpMargin, formatEPS
+from mypackages.format_functions import castToFloat, formatGrowthRate, formatOpMargin, formatEPS
 import pandas as pd
+
+def enterSharePrice(companyDict, resultsDict, companyName):
+    enterPrice = "Enter current share price for {0}"
+    enterPrice = enterPrice.format(companyName)
+    print(enterPrice)
+    sharePrice = input()
+    companyDict[companyName].setSharePrice(sharePrice)
+    return companyDict
 
 def createCompanyDict():    
     """

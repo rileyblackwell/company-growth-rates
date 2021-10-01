@@ -12,14 +12,6 @@ def castToFloat(variable):
             variable = input()
    return variable 
 
-def enterSharePrice(companyDict, resultsDict, companyName):
-    enterPrice = "Enter current share price for {0}"
-    enterPrice = enterPrice.format(companyName)
-    print(enterPrice)
-    sharePrice = input()
-    companyDict[companyName].setSharePrice(sharePrice)
-    return companyDict
-
 def formatGrowthRate(data):
     data *= 100
     data -= 100
