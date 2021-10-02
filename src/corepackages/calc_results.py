@@ -4,10 +4,10 @@ from formatpackages.format_functions import castToFloat
 def calcRevenue(companyDict, resultsDict, companyName):
     values = []
     values.append(companyDict[companyName].getRevenue())
-    n = 0
-    years = companyDict[companyName].getYears()
     revenue = companyDict[companyName].getRevenue()
     growthRate = companyDict[companyName].getGrowthRate()
+    years = companyDict[companyName].getYears()
+    n = 0
     
     while n < years:
         revenue *= growthRate
@@ -21,12 +21,12 @@ def calcRevenue(companyDict, resultsDict, companyName):
     return resultsDict
 
 def calcOpInc(companyDict, resultsDict, companyName):
-    revenueList = resultsDict[companyName].getRevenue()     
     margin = companyDict[companyName].getOpMargin()
     growthRate = companyDict[companyName].getOpMarginGrowthRate()
     margin = (growthRate * -1) + margin
     maxMargin = companyDict[companyName].getMaxOpMargin()
     years = companyDict[companyName].getYears()
+    revenueList = resultsDict[companyName].getRevenue() 
     result = []
     
     for revenue in revenueList:
@@ -40,13 +40,12 @@ def calcOpInc(companyDict, resultsDict, companyName):
     resultsDict[companyName].setOperatingIncome(result)
     return resultsDict
 
-def calcEPS(companyDict, resultsDict, companyName):
+def calcEPS(companyDict, resultsDict, companyName): 
     operatingIncome = resultsDict[companyName].getOperatingIncome()
-    epsList = []
-    n = 0
     shares = companyDict[companyName].getShares() 
     shareChange = companyDict[companyName].getShareChange()
-    
+    epsList = []
+
     for year in operatingIncome:
         shares *= shareChange
         earnedPerShare =  (year * 1000000000 *.95) / shares
@@ -58,6 +57,7 @@ def calcEPS(companyDict, resultsDict, companyName):
 
 def calcPE(companyDict, resultsDict, companyName):
     sharePrice = companyDict[companyName].getSharePrice()
+    
     if sharePrice != "skip":
         sharePrice = castToFloat(sharePrice)
         epsList = resultsDict[companyName].getEPS()
@@ -65,7 +65,7 @@ def calcPE(companyDict, resultsDict, companyName):
         
         for eps in epsList:
             pe = sharePrice / eps
-            pe = round(pe,2)
+            pe = round(pe, 2)
             peList.append(pe)
             
         resultsDict[companyName].setPE(peList)

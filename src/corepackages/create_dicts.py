@@ -8,6 +8,7 @@ def createCompanyDict():
     """
     companyDict = {}
     companyDataDF = pd.read_csv("CompanyDataCSV.txt") 
+    
     for companyName in companyDataDF:
         companyObj = Company(
             companyDataDF.loc[0,companyName],companyDataDF.loc[1,companyName],
@@ -20,6 +21,7 @@ def createCompanyDict():
 def createResultsDict(companyDict):
     companyKeys = companyDict.keys()
     resultsDict = {}
+    
     for companyName in companyKeys: 
         resultsDict = calcRevenue(companyDict, resultsDict, companyName)
         resultsDict = calcOpInc(companyDict, resultsDict, companyName)

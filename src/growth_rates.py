@@ -23,6 +23,7 @@ def viewCompanies(resultsDict, companyDict, companyList):
 
 def viewAnotherModel(companyDict, resultsDict):
     companyList = inputCompanies(resultsDict)
+    
     print("Modify revenue growth, op margin, or share change? Select all catagories that apply or type \"none\".")
     newParameters = input() 
     newParameters = newParameters.lower()
