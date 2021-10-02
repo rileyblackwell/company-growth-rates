@@ -33,5 +33,4 @@ def enterSharePrice(companyDict, resultsDict, companyName):
     sharePrice = input()
     companyDict[companyName].setSharePrice(sharePrice)
     return companyDict 
-                 
-    
+

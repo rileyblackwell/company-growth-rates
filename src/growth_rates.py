@@ -5,43 +5,38 @@ from corepackages.calc_results import calcPE
 
 def viewCompanies(resultsDict, companyDict, companyList):
     for company in companyList:
-        growthRate = companyDict[company].getGrowthRate()
-        growthRate = formatGrowthRate(growthRate)
-        opMargin = companyDict[company].getOpMargin()        
-        opMargin = formatOpMargin(opMargin)
-        shareChange = companyDict[company].getShareChange()
-        shareChange = formatEPS(shareChange)
-        maxMargin = companyDict[company].getMaxOpMargin()
-        maxMargin = formatOpMargin(maxMargin)
-        marginGrowth = companyDict[company].getOpMarginGrowthRate()
-        marginGrowth = formatOpMargin(marginGrowth)
+        growthRate = formatGrowthRate(companyDict[company].getGrowthRate())   
+        opMargin = formatOpMargin(companyDict[company].getOpMargin())
+        shareChange = formatEPS(companyDict[company].getShareChange())
+        maxMargin = formatOpMargin(companyDict[company].getMaxOpMargin())
+        marginGrowth = formatOpMargin(companyDict[company].getOpMarginGrowthRate())
         marginGrowth = marginGrowth[:-1]
         marginGrowth += " basis points"
         companyDict = enterSharePrice(companyDict, resultsDict, company)
         resultsDict = calcPE(companyDict, resultsDict, company)
          
         print("\n", company.upper())
-        print(f"Revenue --> growth rate: {growthRate} " + formatResults(resultsDict, company, 'revenue'))
-        print(f"Operating Income --> margin: {opMargin} max: {maxMargin}, growth:  {marginGrowth} " + formatResults(resultsDict, company, 'opinc'))
-        print(f"EPS --> {shareChange} " + formatResults(resultsDict, company, 'eps'))
-        print("PE --> " + formatResults(resultsDict, company, 'pe'))
+        print(f"Revenue --> growth rate: {growthRate}  " + formatResults(resultsDict, company, 'revenue'))
+        print(f"Operating Income --> margin: {opMargin} max: {maxMargin}, growth: {marginGrowth}  " + formatResults(resultsDict, company, 'opinc'))
+        print(f"EPS --> {shareChange}  " + formatResults(resultsDict, company, 'eps'))
+        print("PE -->  " + formatResults(resultsDict, company, 'pe'))
 
 def viewAnotherModel(companyDict, resultsDict):
     companyList = inputCompanies(resultsDict)
     print("Modify revenue growth, op margin, or share change? Select all catagories that apply or type \"none\".")
     newParameters = input() 
     newParameters = newParameters.lower()
-    newParametersList = newParameters.split(", ")
+    parametersList = newParameters.split(", ")
      
     for company in companyList:
-        for i in newParametersList:
-            if i in "revenue growth":
+        for parameter in parametersList:
+            if parameter in "revenue growth":
                 print(f"Enter a new revenue growth rate for {company} ex. 1.25 (25%)")
                 newGrowthRate = input()
                 newGrowthRate = castToFloat(newGrowthRate)
                 companyDict[company].setGrowthRate(newGrowthRate)
             
-            elif i in "op margin":
+            elif parameter in "op margin":
                 print(f"Enter a new starting operating margin for {company} ex. 0.25 (25%)")
                 newMargin = input()
                 newMargin = castToFloat(newMargin)
@@ -54,7 +49,7 @@ def viewAnotherModel(companyDict, resultsDict):
                     newMarginGrowth = castToFloat(newMarginGrowth)
                     companyDict[company].setOpMarginGrowthRate(newMarginGrowth)   
             
-            elif i in "share change":
+            elif parameter in "share change":
                 print(f"Enter a new rate for change in share count for {company} ex. 0.95 (5% buyback) or 1.05 (5% increase)")
                 newShareCount = input()
                 newShareCount = castToFloat(newShareCount)
@@ -77,21 +72,22 @@ def answerViewAnother(answer):
     else:
         return False
     
-    return True
-
+    return True                 
+    
 companyDict = createCompanyDict()
 resultsDict = createResultsDict(companyDict)
 companyList = inputCompanies(resultsDict)
+
 viewCompanies(resultsDict, companyDict, companyList)
-print()
-print("Do you want to view another model Y or N?")
+
+print("\nDo you want to view another model Y or N?")
 answer = input()
-answer = answer.lower()
-viewModel = answerViewAnother(answer)
-while viewModel:
+viewModel = answerViewAnother(answer.lower())
+
+while viewModel == True:
     viewAnotherModel(companyDict, resultsDict)
-    print()
-    print("Do you want to view another model Y or N?")
+    print("\nDo you want to view another model Y or N?")
     answer = input()
-    answer = answer.lower()
-    viewModel = answerViewAnother(answer)
+    viewModel = answerViewAnother(answer.lower())
+ 
+    
