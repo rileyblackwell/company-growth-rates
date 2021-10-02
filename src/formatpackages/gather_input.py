@@ -26,7 +26,6 @@ def checkInput(companyList, resultsDict):
                 return False
     return True
 
-
 def enterSharePrice(companyDict, resultsDict, companyName):
     enterPrice = "Enter current share price for {0}"
     enterPrice = enterPrice.format(companyName)

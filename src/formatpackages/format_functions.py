@@ -37,3 +37,18 @@ def formatEPS(data):
     else:
         data += " share increase"
     return data
+
+def formatResults(resultsDict, company, key):
+    totalResults = ''
+    if key == 'revenue':
+        results = resultsDict[company].getRevenue()
+    elif key == 'opinc':
+        results = resultsDict[company].getOperatingIncome()
+    elif key == 'eps':
+        results = resultsDict[company].getEPS()
+    elif key == 'pe':
+        results = resultsDict[company].getPE()
+
+    for result in results:
+        totalResults += (str(result) + " " )
+    return totalResults    
