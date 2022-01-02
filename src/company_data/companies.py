@@ -1,3 +1,5 @@
+import pandas as pd
+
 class Company(object):
     def __init__(self, r, g, m, omg, mom, s, sc):
         self.revenue = r
@@ -43,28 +45,19 @@ class Company(object):
         self.sharePrice = sp
     def setYears(self, y):
         self.years = y
-     
-class Results(object):
-    def __init__(self, noValue = ["No values for this instance"]):
-        self.revenue = noValue 
-        self.operatingIncome = noValue 
-        self.eps = noValue
-        self.pe = noValue
+
+def createCompanyDict():    
+    """
+        Make sure that all read data is a number! Column names are all lowercase!
+    """
+    companyDict = {}
+    companyDataDF = pd.read_csv("CompanyDataCSV.txt") 
     
-    def getRevenue(self):
-        return self.revenue
-    def getOperatingIncome(self):
-        return self.operatingIncome      
-    def getEPS(self): 
-        return self.eps
-    def getPE(self):
-        return self.pe
-    
-    def setRevenue(self, r):
-        self.revenue = r
-    def setOperatingIncome(self, o):
-        self.operatingIncome = o
-    def setEPS(self, e):
-        self.eps = e
-    def setPE(self, p):
-        self.pe = p
+    for companyName in companyDataDF:
+        companyObj = Company(
+            companyDataDF.loc[0,companyName],companyDataDF.loc[1,companyName],
+            companyDataDF.loc[2,companyName],companyDataDF.loc[3,companyName], 
+            companyDataDF.loc[4,companyName],companyDataDF.loc[5,companyName],
+            companyDataDF.loc[6,companyName]) 
+        companyDict[companyName] = companyObj
+    return companyDict        

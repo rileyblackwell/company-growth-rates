@@ -1,5 +1,30 @@
-from corepackages.classes import Results
-from formatpackages.format_functions import castToFloat
+from formating.format_functions import castToFloat 
+
+class Results(object):
+    def __init__(self, noValue = ["No values for this instance"]):
+        self.revenue = noValue 
+        self.operatingIncome = noValue 
+        self.eps = noValue
+        self.pe = noValue
+    
+    def getRevenue(self):
+        return self.revenue
+    def getOperatingIncome(self):
+        return self.operatingIncome      
+    def getEPS(self): 
+        return self.eps
+    def getPE(self):
+        return self.pe
+    
+    def setRevenue(self, r):
+        self.revenue = r
+    def setOperatingIncome(self, o):
+        self.operatingIncome = o
+    def setEPS(self, e):
+        self.eps = e
+    def setPE(self, p):
+        self.pe = p
+
 
 def calcRevenue(companyDict, resultsDict, companyName):
     values = []
@@ -70,3 +95,14 @@ def calcPE(companyDict, resultsDict, companyName):
             
         resultsDict[companyName].setPE(peList)
     return resultsDict
+
+
+def createResultsDict(companyDict):
+    companyKeys = companyDict.keys()
+    resultsDict = {}
+    
+    for companyName in companyKeys: 
+        resultsDict = calcRevenue(companyDict, resultsDict, companyName)
+        resultsDict = calcOpInc(companyDict, resultsDict, companyName)
+        resultDict = calcEPS(companyDict, resultsDict, companyName)
+    return resultsDict        
