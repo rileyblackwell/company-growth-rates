@@ -1,7 +1,8 @@
-from formatpackages.format_functions import castToFloat, formatGrowthRate, formatOpMargin, formatEPS, formatResults
-from formatpackages.gather_input import inputCompanies, enterSharePrice
-from corepackages.create_dicts import createCompanyDict, createResultsDict
-from corepackages.calc_results import calcPE 
+from formating.format_functions import castToFloat, formatGrowthRate, formatOpMargin, formatEPS, formatResults
+from formating.gather_input import inputCompanies, enterSharePrice
+from company_data.companies import createCompanyDict
+from results_data.results import createResultsDict, calcPE
+
 
 def viewCompanies(resultsDict, companyDict, companyList):
     for company in companyList:
