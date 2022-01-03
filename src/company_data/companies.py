@@ -1,15 +1,15 @@
 import pandas as pd
 
 class Company(object):
-    def __init__(self, r, g, m, omg, mom, s, sc):
-        self.revenue = r
-        self.growthRate = g
-        self.opMargin = m
-        self.opMarginGrowthRate = omg
-        self.maxOpMargin = mom
-        self.shares = s
+    def __init__(self, revenue, growth_rate, op_margin, op_margin_growth_rate, max_op_margin, shares, share_change):
+        self.revenue = revenue
+        self.growthRate = growth_rate
+        self.opMargin = op_margin
+        self.opMarginGrowthRate = op_margin_growth_rate
+        self.maxOpMargin = max_op_margin
+        self.shares = shares
         self.sharePrice = 0
-        self.shareChange = sc
+        self.shareChange = share_change
         self.years = 10 
          
     def getRevenue(self):
