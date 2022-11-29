@@ -1,5 +1,6 @@
 # company-growth-rates
 
+
 ## program that models company growth rates and the effect on their stock
 
 This program is used to visualize growth projections for stock companies.
