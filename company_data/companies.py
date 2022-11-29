@@ -48,16 +48,17 @@ class Company(object):
 
 def createCompanyDict():    
     """
-        Make sure that all read data is a number! Column names are all lowercase!
+        EFFECTS: Returns a dictionary- key: company name, value: a Company object 
+        Note: Make sure that all data that is read in is a number! Column names are all lowercase!
     """
     companyDict = {}
-    companyDataDF = pd.read_csv("CompanyDataCSV.txt") 
+    companyDataFrame = pd.read_csv("CompanyData.csv") 
     
-    for companyName in companyDataDF:
+    for companyName in companyDataFrame:
         companyObj = Company(
-            companyDataDF.loc[0,companyName],companyDataDF.loc[1,companyName],
-            companyDataDF.loc[2,companyName],companyDataDF.loc[3,companyName], 
-            companyDataDF.loc[4,companyName],companyDataDF.loc[5,companyName],
-            companyDataDF.loc[6,companyName]) 
+            companyDataFrame.loc[0,companyName],companyDataFrame.loc[1,companyName],
+            companyDataFrame.loc[2,companyName],companyDataFrame.loc[3,companyName], 
+            companyDataFrame.loc[4,companyName],companyDataFrame.loc[5,companyName],
+            companyDataFrame.loc[6,companyName]) 
         companyDict[companyName] = companyObj
     return companyDict        
