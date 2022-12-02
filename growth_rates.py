@@ -13,14 +13,14 @@ def viewCompanies(resultsDict, companyDict, companyList):
         marginGrowth = formatOpMargin(companyDict[company].getOpMarginGrowthRate())
         marginGrowth = marginGrowth[:-1]
         marginGrowth += " basis points"
-        companyDict = enterSharePrice(companyDict, resultsDict, company)
+        companyDict = enterSharePrice(companyDict, company)
         resultsDict = calcPE(companyDict, resultsDict, company)
          
         print("\n", company.upper())
         print(f"Revenue --> growth rate: {growthRate}  " + formatResults(resultsDict, company, 'revenue'))
         print(f"Operating Income --> margin: {opMargin} max: {maxMargin}, growth: {marginGrowth}  " + formatResults(resultsDict, company, 'opinc'))
         print(f"EPS --> {shareChange}  " + formatResults(resultsDict, company, 'eps'))
-        print("PE -->  " + formatResults(resultsDict, company, 'pe'))
+        print("PE -->  " + formatResults(resultsDict, company, 'pe') + "\n")
 
 def viewAnotherModel(companyDict, resultsDict):
     companyList = inputCompanies(resultsDict)

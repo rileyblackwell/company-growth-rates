@@ -1,12 +1,15 @@
 from format.format_functions import castToFloat 
 
 class Results(object):
-    def __init__(self, noValue = ["No values for this instance"]):
-        self.revenue = noValue 
-        self.operatingIncome = noValue 
-        self.eps = noValue
-        self.pe = noValue
+    def __init__(self, companyName):
+        self.companyName = companyName
+        self.revenue = None 
+        self.operatingIncome = None 
+        self.eps = None
+        self.pe = None
     
+    def getCompanyName(self):
+        return self.companyName
     def getRevenue(self):
         return self.revenue
     def getOperatingIncome(self):
@@ -40,7 +43,7 @@ def calcRevenue(companyDict, resultsDict, companyName):
         values.append(revenue)
         n += 1
     
-    resultsObj = Results()
+    resultsObj = Results(companyName)
     resultsObj.setRevenue(values)
     resultsDict[companyName] = resultsObj
     return resultsDict
@@ -104,5 +107,5 @@ def createResultsDict(companyDict):
     for companyName in companyKeys: 
         resultsDict = calcRevenue(companyDict, resultsDict, companyName)
         resultsDict = calcOpInc(companyDict, resultsDict, companyName)
-        resultDict = calcEPS(companyDict, resultsDict, companyName)
+        resultsDict = calcEPS(companyDict, resultsDict, companyName)
     return resultsDict        

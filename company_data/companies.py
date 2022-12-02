@@ -1,7 +1,9 @@
 import pandas as pd
 
 class Company(object):
-    def __init__(self, revenue, growth_rate, op_margin, op_margin_growth_rate, max_op_margin, shares, share_change):
+    def __init__(self, companyName, revenue, growth_rate, op_margin, op_margin_growth_rate, 
+                 max_op_margin, shares, share_change):
+        self.companyName = companyName
         self.revenue = revenue
         self.growthRate = growth_rate
         self.opMargin = op_margin
@@ -10,8 +12,10 @@ class Company(object):
         self.shares = shares
         self.sharePrice = 0
         self.shareChange = share_change
-        self.years = 10 
-         
+        self.years = 10 # view 10 years by deafult
+
+    def getCompanyName(self):
+        return self.companyName      
     def getRevenue(self):
         return self.revenue
     def getGrowthRate(self):
@@ -56,9 +60,9 @@ def createCompanyDict():
     
     for companyName in companyDataFrame:
         companyObj = Company(
-            companyDataFrame.loc[0,companyName],companyDataFrame.loc[1,companyName],
-            companyDataFrame.loc[2,companyName],companyDataFrame.loc[3,companyName], 
-            companyDataFrame.loc[4,companyName],companyDataFrame.loc[5,companyName],
+            companyName, companyDataFrame.loc[0,companyName], companyDataFrame.loc[1,companyName],
+            companyDataFrame.loc[2,companyName], companyDataFrame.loc[3,companyName], 
+            companyDataFrame.loc[4,companyName], companyDataFrame.loc[5,companyName],
             companyDataFrame.loc[6,companyName]) 
         companyDict[companyName] = companyObj
     return companyDict        

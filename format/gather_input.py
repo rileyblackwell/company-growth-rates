@@ -2,11 +2,11 @@ def inputCompanies(resultsDict):
     isValid = False
     
     while isValid == False:
-        companyList = gatherInput(resultsDict)
+        companyList = inputCompaniesImpl(resultsDict)
         isValid = checkInput(companyList, resultsDict)
     return companyList
 
-def gatherInput(resultsDict):
+def inputCompaniesImpl(resultsDict):
     print('What companies do you want information on?') 
     for company in resultsDict.keys():
         print(company)
@@ -29,7 +29,7 @@ def checkInput(companyList, resultsDict):
                 return False
     return True
 
-def enterSharePrice(companyDict, resultsDict, company):
+def enterSharePrice(companyDict, company):
     print(f"Enter current share price for {company}")
     sharePrice = input()
     companyDict[company].setSharePrice(sharePrice)
